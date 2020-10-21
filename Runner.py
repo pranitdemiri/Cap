@@ -3,7 +3,7 @@ import picar
 import cv2
 import datetime
 from hand_coded_lane_follower import HandCodedLaneFollower
-from objects_on_road_processor import ObjectsOnRoadProcessor
+
 
 _SHOW_IMAGE = True
 
@@ -42,7 +42,7 @@ class Duckiebot(object):
         self.front_wheels.turn(90)  # Steering Range is 45 (left) - 90 (center) - 135 (right)
 
         self.lane_follower = HandCodedLaneFollower(self)
-        self.traffic_sign_processor = ObjectsOnRoadProcessor(self)
+
 
 
         self.fourcc = cv2.VideoWriter_fourcc(*'XVID')
@@ -69,7 +69,7 @@ class Duckiebot(object):
         self.cleanup()
 
     def cleanup(self):
-        """ Reset the hardware"""
+
         logging.info('Stopping the car, resetting hardware.')
         self.back_wheels.speed = 0
         self.front_wheels.turn(90)
@@ -80,10 +80,7 @@ class Duckiebot(object):
         cv2.destroyAllWindows()
 
     def drive(self, speed=__INITIAL_SPEED):
-        """ Main entry point of the car, and put it in drive mode
-        Keyword arguments:
-        speed -- speed of back wheel, range is 0 (stop) - 100 (fastest)
-        """
+
 
         logging.info('Starting to drive at speed %s...' % speed)
         self.back_wheels.speed = speed
@@ -94,9 +91,6 @@ class Duckiebot(object):
             i += 1
             self.video_orig.write(image_lane)
 
-            image_objs = self.process_objects_on_road(image_objs)
-            self.video_objs.write(image_objs)
-            show_image('Detected Objects', image_objs)
 
             image_lane = self.follow_lane(image_lane)
             self.video_lane.write(image_lane)
@@ -106,9 +100,6 @@ class Duckiebot(object):
                 self.cleanup()
                 break
 
-    def process_objects_on_road(self, image):
-        image = self.traffic_sign_processor.process_objects_on_road(image)
-        return image
 
     def follow_lane(self, image):
         image = self.lane_follower.follow_lane(image)

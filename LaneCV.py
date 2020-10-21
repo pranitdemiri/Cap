@@ -2,8 +2,7 @@ import cv2
 import numpy as np
 import logging
 import math
-import datetime
-import sys
+
 
 _SHOW_IMAGE = False
 
